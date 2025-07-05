@@ -1,77 +1,99 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #0d0d0d;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  background-color: #0a0a0a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   text-align: center;
+  color: white;
+  padding: 40px 20px 20px;
+  box-sizing: border-box;
 }
 
 h1 {
+  color: white;
   font-size: 2.5rem;
-  margin-bottom: 20px;
-  color: #FFD700;
+  margin-bottom: 40px;
 }
 
 .bar-container {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  flex-direction: row;
+  flex-wrap: nowrap;
   height: 400px;
-  margin-top: 30px;
-  flex-wrap: wrap;
+  margin-bottom: 40px;
+  overflow-x: auto;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 .bar {
   width: 20px;
-  margin: 0 2px;
-  background-color: #FFD700;
-  text-align: center;
-  color: #000;
+  margin: 0 4px;
+  background-color: gold;
+  color: black;
   font-size: 12px;
-  border-radius: 3px;
-  transition: height 0.1s ease-in-out;
-}
-
-.controls {
-  margin-top: 30px;
+  text-align: center;
+  border-radius: 4px;
+  transition: height 0.3s ease;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  align-items: flex-end;
+  padding-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 button {
   padding: 10px 20px;
-  background-color: #FFD700;
-  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: gold;
+  color: black;
   border: none;
-  border-radius: 5px;
-  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #e6c200;
+  background-color: #ffcc00;
 }
 
 button:disabled {
-  background-color: #888;
-  color: #222;
+  background-color: #555;
   cursor: not-allowed;
-}
-.bar.checking {
-  background-color: #ffa500;
-}
-.bar.found {
-  background-color: #00ff00;
+  color: #ccc;
 }
 
+.search-input {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.search-input input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  outline: none;
+  width: 200px;
+}

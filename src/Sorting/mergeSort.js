@@ -1,43 +1,67 @@
-export const mergeSort = async (arr, setArray, setIsSorting) => {
-  setIsSorting(true);
-  await mergeSortHelper([...arr], 0, arr.length - 1, setArray);
-  setIsSorting(false);
-};
+export const mergeSort = async (array, setArray) => {
+  const bars = document.getElementsByClassName('bar');
 
-const mergeSortHelper = async (arr, left, right, setArray) => {
-  if (left >= right) return;
+  async function mergeSortHelper(arr, l, r) {
+    if (l >= r) return;
 
-  const mid = Math.floor((left + right) / 2);
-  await mergeSortHelper(arr, left, mid, setArray);
-  await mergeSortHelper(arr, mid + 1, right, setArray);
-  await merge(arr, left, mid, right, setArray);
-};
+    const mid = Math.floor((l + r) / 2);
+    await mergeSortHelper(arr, l, mid);
+    await mergeSortHelper(arr, mid + 1, r);
+    await merge(arr, l, mid, r);
+  }
 
-const merge = async (arr, left, mid, right, setArray) => {
-  const leftArr = arr.slice(left, mid + 1);
-  const rightArr = arr.slice(mid + 1, right + 1);
+  async function merge(arr, l, mid, r) {
+    let left = arr.slice(l, mid + 1);
+    let right = arr.slice(mid + 1, r + 1);
 
-  let i = 0, j = 0, k = left;
+    let i = 0, j = 0, k = l;
 
-  while (i < leftArr.length && j < rightArr.length) {
-    if (leftArr[i] <= rightArr[j]) {
-      arr[k++] = leftArr[i++];
-    } else {
-      arr[k++] = rightArr[j++];
+    while (i < left.length && j < right.length) {
+      // Visual feedback
+      bars[k].style.backgroundColor = 'red';
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      if (left[i] <= right[j]) {
+        arr[k] = left[i];
+        i++;
+      } else {
+        arr[k] = right[j];
+        j++;
+      }
+
+      setArray([...arr]); // Update UI
+      bars[k].style.backgroundColor = 'gold';
+      k++;
     }
-    setArray([...arr]);
-    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    while (i < left.length) {
+      bars[k].style.backgroundColor = 'red';
+      await new Promise(resolve => setTimeout(resolve, 100));
+      arr[k] = left[i];
+      i++;
+      setArray([...arr]);
+      bars[k].style.backgroundColor = 'gold';
+      k++;
+    }
+
+    while (j < right.length) {
+      bars[k].style.backgroundColor = 'red';
+      await new Promise(resolve => setTimeout(resolve, 100));
+      arr[k] = right[j];
+      j++;
+      setArray([...arr]);
+      bars[k].style.backgroundColor = 'gold';
+      k++;
+    }
   }
 
-  while (i < leftArr.length) {
-    arr[k++] = leftArr[i++];
-    setArray([...arr]);
-    await new Promise(resolve => setTimeout(resolve, 100));
+  const arr = [...array];
+  await mergeSortHelper(arr, 0, arr.length - 1);
+
+  // Optional: color all bars green at the end
+  for (let i = 0; i < arr.length; i++) {
+    bars[i].style.backgroundColor = 'lime';
   }
 
-  while (j < rightArr.length) {
-    arr[k++] = rightArr[j++];
-    setArray([...arr]);
-    await new Promise(resolve => setTimeout(resolve, 100));
-  }
+  return arr; // ✅ Return final sorted array
 };

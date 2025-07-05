@@ -1,82 +1,81 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-
 import { bubbleSort } from './Sorting/bubbleSort';
 import { mergeSort } from './Sorting/mergeSort';
 import { linearSearch } from './Sorting/linearSearch';
 
-function App() {
+const App = () => {
   const [array, setArray] = useState([]);
   const [isSorting, setIsSorting] = useState(false);
-  const [searchTarget, setSearchTarget] = useState(50);
+  const [searchValue, setSearchValue] = useState('');
 
   const generateArray = () => {
-    const arr = Array.from({ length: 30 }, () => ({
-      value: Math.floor(Math.random() * 200) + 20,
-    }));
-    setArray(arr);
+    const newArray = Array.from({ length: 30 }, () => Math.floor(Math.random() * 200) + 1);
+    setArray(newArray);
   };
 
   useEffect(() => {
     generateArray();
   }, []);
 
+  const handleBubbleSort = async () => {
+    setIsSorting(true);
+    const sorted = await bubbleSort(array, setArray);
+    setArray(sorted);
+    setIsSorting(false);
+  };
+
+  const handleMergeSort = async () => {
+    setIsSorting(true);
+    const sorted = await mergeSort(array, setArray);
+    setArray(sorted);
+    setIsSorting(false);
+  };
+
+  const handleLinearSearch = async () => {
+    setIsSorting(true);
+    const target = parseInt(searchValue);
+    if (!isNaN(target)) {
+      await linearSearch(array, setArray, target);
+    }
+    setIsSorting(false);
+  };
+
   return (
     <div className="container">
-      <h1>Sorting & Searching Visualizer</h1>
-
+      <h1>DSA Visualizer</h1>
       <div className="bar-container">
-        {array.map((item, idx) => (
+        {array.map((value, index) => (
           <div
-            key={idx}
-            className={`bar ${item.highlight || ''}`}
-            style={{
-              height: `${item.value}px`,
-            }}
+            className="bar"
+            key={index}
+            style={{ height: `${value * 2}px` }}
           >
-            {item.value}
+            {value}
           </div>
         ))}
       </div>
 
-      <div className="controls">
-        <button onClick={generateArray} disabled={isSorting}>
-          Generate Array
-        </button>
+      <div className="buttons">
+        <button onClick={generateArray} disabled={isSorting}>Generate Array</button>
+        <button onClick={handleBubbleSort} disabled={isSorting}>Bubble Sort</button>
+        <button onClick={handleMergeSort} disabled={isSorting}>Merge Sort</button>
+      </div>
 
-        <button
-          onClick={() => bubbleSort(array, setArray, setIsSorting)}
-          disabled={isSorting}
-        >
-          Bubble Sort
-        </button>
-
-        <button
-          onClick={() => mergeSort(array, setArray, setIsSorting)}
-          disabled={isSorting}
-        >
-          Merge Sort
-        </button>
-
+      <div className="search-input">
         <input
           type="number"
-          value={searchTarget}
-          onChange={(e) => setSearchTarget(Number(e.target.value))}
+          placeholder="Enter number to search"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
           disabled={isSorting}
-          style={{ padding: '10px', borderRadius: '5px', width: '80px' }}
         />
-
-        <button
-          onClick={() =>
-            linearSearch(array, searchTarget, setArray, setIsSorting)
-          }
-          disabled={isSorting}
-        >
+        <button onClick={handleLinearSearch} disabled={isSorting || !searchValue}>
           Linear Search
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default App;

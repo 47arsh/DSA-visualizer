@@ -1,22 +1,21 @@
-export const linearSearch = async (arr, target, setArray, setIsSorting) => {
-  setIsSorting(true);
-  let temp = arr.map(item => ({ ...item })); // deep copy
+export const linearSearch = async (array, setArray, target) => {
+  const bars = document.getElementsByClassName('bar');
 
-  for (let i = 0; i < temp.length; i++) {
-    temp[i].highlight = 'checking';
-    setArray([...temp]);
-    await new Promise((resolve) => setTimeout(resolve, 300));
+  for (let i = 0; i < array.length; i++) {
+    // Highlight current bar
+    bars[i].style.backgroundColor = 'red';
 
-    if (temp[i].value === target) {
-      temp[i].highlight = 'found';
-      setArray([...temp]);
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      break;
+    await new Promise(resolve => setTimeout(resolve, 150)); // Delay
+
+    if (array[i] === target) {
+      bars[i].style.backgroundColor = 'lime';
+      alert(`Found ${target} at index ${i}`);
+      return;
     }
 
-    temp[i].highlight = null;
-    setArray([...temp]);
+    // Reset bar if not found
+    bars[i].style.backgroundColor = 'gold';
   }
 
-  setIsSorting(false);
+  alert(`${target} not found`);
 };
